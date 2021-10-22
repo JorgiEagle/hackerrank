@@ -1,0 +1,31 @@
+import math
+def calculate_distance(first, second):
+    return math.sqrt(abs(first[0]-second[0])**2 + abs(first[1]-second[1])**2)
+    
+def find_nearest_dirty(bot_row, bot_column, dirty):
+    bot_distance = [calculate_distance(entry, (bot_row, bot_column)) for entry in dirty]
+    return dirty[bot_distance.index(min(bot_distance))]
+        
+def next_move(posx, posy, dimx, dimy, board):
+    #if on a dirty tile, clean
+    if board[posx][posy] == 'd':
+        print("CLEAN")
+    #else, find all dirty cells
+    else:
+        dirty = [(row, column) for row in range(dimx) for column in range(dimy) if board[row][column] == 'd']
+        #find nearest dirty cell to current position
+        next_tile = find_nearest_dirty(posx, posy, dirty)
+        if posx > next_tile[0]:
+            print("UP")
+        elif posx < next_tile[0]:
+            print("DOWN")
+        elif posy > next_tile[1]:
+            print("LEFT")
+        else:
+            print("RIGHT")
+
+if __name__ == "__main__":
+    pos = [int(i) for i in input().strip().split()]
+    dim = [int(i) for i in input().strip().split()]
+    board = [[j for j in input().strip()] for i in range(dim[0])]
+    next_move(pos[0], pos[1], dim[0], dim[1], board)
